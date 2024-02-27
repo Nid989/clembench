@@ -1,26 +1,25 @@
-You are provided with 3 grids, each of them is 5x5 in size.
-Empty cells are marked with "▢" and filled cells are marked with "X".
+You are given three grids, where each of them is 5 by 5 in size.
+Grids have empty cells marked with "▢" and filled cells marked with "X".
 You are also given a referring expression that describes one of the given grids.
 
-Goal:
-    Your task is to select the grid that matches the given referring expression.
+Your task is to select the grid that matches the given referring expression.
 
-Rules:
-    (a) Your response must follow the structure: "REASON: <some text> \nANSWER: <some text>".
-    (b) Think step-by-step. Explain your reasoning under "REASON: <some text>" before generating the final answer under "ANSWER: <some text>".
-    (c) "ANSWER: <some text>" should only contain the number (in text) of the grid that matches the given expression i.e. first, second or third.
+Your response should follow the JSON schema given below:
+{
+"REASON": "Explain the reasoning for choosing the grid that matches the given expression.",
+"ANSWER": "Number (in text) of the grid that matches the given expression by either selecting first, second or third."
+}
+
+Expression:
+TARGET_EXPRESSION
 
 First:
-
 FIRST_GRID
 
 Second:
-
 SECOND_GRID
 
 Third:
-
 THIRD_GRID
 
-TARGET_EXPRESSION
-Question: Which grid does the expression refer to?
+Let's think step-by-step. Do not generate anything else except for the JSON output.

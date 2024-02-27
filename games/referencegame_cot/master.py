@@ -1,5 +1,6 @@
 from typing import List, Tuple, Dict
 
+import json
 from backends import Model
 from clemgame import file_utils
 from clemgame import metrics
@@ -11,6 +12,12 @@ import math
 
 GAME_NAME = "referencegame_cot"
 logger = get_logger(__name__)
+
+def convert_to_json(response: str) -> Dict:
+    try:
+        return json.loads(response)
+    except json.JSONDecodeError as e:
+        return None
 
 class ReferenceGameCOTMaster(GameMaster):
     
@@ -68,35 +75,34 @@ class ReferenceGameCOTMaster(GameMaster):
 
         self.request_count += 1
 
-        if re.match(self.game.player_1_response_pattern, player_1_response_text.lower()):
-            matches = re.findall(r"EXPRESSION:\s*((?:.*\n?)+)", player_1_response_text)
-            if matches:
-                parsed_instruction = matches[0].strip()
-                action = {'type': 'parse', 'content': parsed_instruction,
-                        'original_content': player_1_response_text}
-                self.log_event(from_="GM", to="GM", action=action)
-                self.parsed_request_count += 1
-                player_1_response_text = parsed_instruction
-            else:
-                # if the Player 1 message doesn't contain the rule => "Expression: <some text>"
+        player_1_response = convert_to_json(player_1_response_text)
+        if player_1_response:
+            if not all(key in player_1_response for key in ['REASON', 'EXPRESSION']):
+                # if the Player 1 message; JSON output contains missing fields.
                 # log the message and abort the game
-                action = {'type': 'invalid format', 'content': 'Invalid generated expression',
+                action = {'type': 'invalid format', 'content': 'Invalid generated expression - missing fields',
                         'original_content': player_1_response_text}
                 self.log_event(from_="GM", to="GM", action=action)
 
                 self.violated_request_count += 1
                 self.aborted_ratio = 1
-                return
+            else:
+                parsed_instruction = player_1_response['EXPRESSION']
+                action = {'type': 'parse', 'content': parsed_instruction,
+                          'original_content': player_1_response_text}
+                self.log_event(from_="GM", to="GM", action=action)
+                self.parsed_request_count += 1
+                player_1_response_text = parsed_instruction
         else:
-            # if the Player 1 message doesn't match the rule => "Reason: <some text> \nExpression: <some text>"
-            # log the message and abort the game 
-            action = {'type': 'invalid format', 'content': 'Invalid generated expression',
+            # if the Player 1 message doesn't obey the standard JSON structure output
+            # log the message and abort the game
+            action = {'type': 'invalid format', 'content': 'Invalid generated expression - JSON format error',
                       'original_content': player_1_response_text}
             self.log_event(from_="GM", to="GM", action=action)
 
             self.violated_request_count += 1
             self.aborted_ratio = 1
-            return
+            return 
 
         # guess the grid - Player 2 side
         self.game.followed_instruction.add_user_message(self.game.player_2_prompt_header.replace('TARGET_EXPRESSION', player_1_response_text))
@@ -116,53 +122,43 @@ class ReferenceGameCOTMaster(GameMaster):
         self.log_event(from_="Player 2", to="GM", action=action, call=(player_2_prompt, player_2_response))
         self.request_count += 1
 
-        print(player_2_response_text)
-
-        # check if the Player 2 message matches the rule => grid
-        if re.match(self.game.player_2_response_pattern, player_2_response_text.lower()):
-            matches = re.findall(r"answer:\s*(first|second|third)", player_2_response_text.lower())
-            if matches:
-                parsed_instruction = matches[0].strip()
-                action = {'type': 'parse', 'content': parsed_instruction,
-                          'original_content': player_2_response_text}
-                self.log_event(from_="GM", to="GM", action=action)
-                self.parsed_request_count += 1
-                player_1_response_text = parsed_instruction
-            else:
-                # If the player 2 message doesn't contain the rule => "Answer: <some text>"
+        player_2_response = convert_to_json(player_2_response_text)
+        if player_2_response:
+            if not all(key in player_2_response for key in ['REASON', 'ANSWER']):
+                # if the Player 1 message; JSON output contains missing fields.
                 # log the message and abort the game
-                action = {'type': 'invalid format', 'content': 'Invalid generated choice',
+                action = {'type': 'invalid format', 'content': 'Invalid generated choice - missing fields',
                           'original_content': player_2_response_text}
                 self.log_event(from_="GM", to="GM", action=action)
 
                 self.violated_request_count += 1
                 self.aborted_ratio = 1
+            else:
+                if player_2_response['ANSWER'].lower().strip() in ['first', 'second', 'third']:
+                    parsed_instruction = player_2_response['ANSWER'].lower().strip()
+                    action = {'type': 'parse', 'content': parsed_instruction,
+                              'original_content': player_2_response_text}
+                    self.log_event(from_="GM", to="GM", action=action)
+                    self.parsed_request_count += 1
+                    player_1_response_text = parsed_instruction
+                else:
+                    # if the Player 2 message; JSON output field doesn't contain the expected values.
+                    # lof the message and abort the game
+                    action = {'type': 'invalid format', 'content': 'Invalid generated choice - invalid value',
+                              'original_content': player_2_response_text}
+                    self.log_event(from_="GM", to="GM", action=action)
+
+                    self.violated_request_count += 1
+                    self.aborted_ratio = 1
         else:
-            # If the player 2 message doesn't match the rule => "Reason: <some text> \nAnswer: <some text>"
+            # if the Player 2 message doesn't follow the standard JSON structure output.
             # log the message and abort the game
-            action = {'type': 'invalid format', 'content': 'Invalid generated choice',
+            action = {'type': 'invalid format', 'content': 'Invalid generated choice - JSON format error',
                       'original_content': player_2_response_text}
             self.log_event(from_="GM", to="GM", action=action)
 
             self.violated_request_count += 1
             self.aborted_ratio = 1
-
-        # # check if the Player 2 message matches the rule => grid
-        # if re.match(self.game.player_2_response_pattern, player_2_response_text.lower()):
-        #     self.parsed_request_count += 1
-
-        #     action = {'type': 'parse', 'content': player_2_response_text,
-        #               'original_content': player_2_response_text}
-        #     self.log_event(from_="GM", to="GM", action=action)
-
-        # else:
-        #     # abort the game if the output doesn't match the rule
-        #     action = {'type': 'invalid format', 'content': 'Invalid generated choice',
-        #               'original_content': player_2_response_text}
-        #     self.log_event(from_="GM", to="GM", action=action)
-
-        #     self.violated_request_count += 1
-        #     self.aborted_ratio = 1
 
 
 class ReferenceGameCOTScorer(GameScorer):
@@ -170,8 +166,8 @@ class ReferenceGameCOTScorer(GameScorer):
     def __init__(self, experiment: Dict, game_instance: Dict):
         super().__init__(GAME_NAME, experiment, game_instance)
         self.target_grid_name = game_instance["target_grid_name"]
-        self.player_1_response_pattern = r'{}'.format(game_instance["player_1_response_pattern"])
-        self.player_2_response_pattern = r'{}'.format(game_instance["player_2_response_pattern"])
+        # self.player_1_response_pattern = r'{}'.format(game_instance["player_1_response_pattern"])
+        # self.player_2_response_pattern = r'{}'.format(game_instance["player_2_response_pattern"])
         self.player_2_response_tag = game_instance["player_2_response_tag"]
         self.player_1_response_tag = game_instance["player_1_response_tag"]
 
@@ -187,10 +183,9 @@ class ReferenceGameCOTScorer(GameScorer):
         episode_violated_request_count = 0
         aborted = False
         number_of_turns = 0
-
         # loop over each turn and compute turn-specific scores for the metrics
         for t_index, turn in enumerate(episode_interactions["turns"]):
-
+            
             turn_request_count = 0
             turn_parsed_request_count = 0
             turn_violated_request_count = 0
@@ -201,8 +196,8 @@ class ReferenceGameCOTScorer(GameScorer):
             turn_request_count += 1
             episode_request_count += 1
 
-            # check if the Player 1 message follows the rule
-            if re.match(self.player_1_response_pattern, player_1_message.lower()):
+            player_1_message_dict = convert_to_json(player_1_message)
+            if player_1_message_dict and all(key in player_1_message_dict for key in ['REASON', 'EXPRESSION']):
                 turn_parsed_request_count += 1
                 episode_parsed_request_count += 1
             else:
@@ -218,13 +213,12 @@ class ReferenceGameCOTScorer(GameScorer):
             turn_request_count += 1
             episode_request_count += 1
 
-            # check if the Player 2 message matches the rule -> start "Answer: ..."
-            if re.match(self.player_2_response_pattern, player_2_message.lower()):
+            player_2_message_dict = convert_to_json(player_2_message)
+            if player_2_message_dict and all(key in player_2_message_dict for key in ['REASON', 'ANSWER']):
                 turn_parsed_request_count += 1
                 episode_parsed_request_count += 1
-
                 # check if the target grid number matches the output from Player 2
-                if self.target_grid_name.lower() in player_2_message.lower().replace(self.player_2_response_tag, '').strip():
+                if self.target_grid_name.lower() in player_2_message_dict['ANSWER'].lower().strip():
                     success = 1
                 else:
                     lost_count = 1
@@ -235,12 +229,12 @@ class ReferenceGameCOTScorer(GameScorer):
                 break
 
             # log the Player 1 - message length
-            expression_length = len(player_1_message.lower().replace(self.player_1_response_tag, '').strip())
+            expression_length = len(player_1_message_dict['EXPRESSION'].strip())
             self.log_turn_score(t_index, 'Generated Expression Length', expression_length)
             expression_length_sum += expression_length
 
             # log the Player 1 - number of tokens in the generated expression
-            number_of_tokens = len(player_1_message.lower().replace(self.player_1_response_tag, '').strip().split(' '))
+            number_of_tokens = len(player_1_message_dict['EXPRESSION'].strip().split(' '))
             self.log_turn_score(t_index, 'Generated Expression Number of Tokens', number_of_tokens)
             expression_number_of_tokens += number_of_tokens
 
