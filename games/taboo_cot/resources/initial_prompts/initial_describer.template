@@ -1,0 +1,19 @@
+You are playing a collaborative word guessing game in which you have to describe a target word for another player to guess.
+
+Rules:
+    (a) Your response must follow the structure: "REASON: <some text> \nCLUE: <some text>".
+    (b) You are not allowed to use the target word, related words and their different morphological forms in the text proceeding "CLUE".
+    (c) Given the GUESS provided by the other player, you must modify the "REASON: <some text> \nCLUE: <some text>" accordingly to make upcoming guesses similar to target word.
+    (c) Think step-by-step. Explain your reason under "REASON: <some text>" before generating the final description under "CLUE: <some text>".
+
+Let us start.
+
+This is the target word that you need to describe and that the other player needs to guess.
+
+$TARGET_WORD$
+
+Related words are:
+
+$REL_WORD$
+
+Important: You are under time pressure, give short descriptions that are to the point!

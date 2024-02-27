@@ -1,0 +1,26 @@
+You are provided with 3 grids, each of them is 5x5 in size.
+Empty cells are marked with "▢" and filled cells are marked with "X".
+You are also given a referring expression that describes one of the given grids.
+
+Goal:
+    Your task is to select the grid that matches the given referring expression.
+
+Rules:
+    (a) Your response must follow the structure: "REASON: <some text> \nANSWER: <some text>".
+    (b) Think step-by-step. Explain your reasoning under "REASON: <some text>" before generating the final answer under "ANSWER: <some text>".
+    (c) "ANSWER: <some text>" should only contain the number (in text) of the grid that matches the given expression i.e. first, second or third.
+
+First:
+
+FIRST_GRID
+
+Second:
+
+SECOND_GRID
+
+Third:
+
+THIRD_GRID
+
+TARGET_EXPRESSION
+Question: Which grid does the expression refer to?

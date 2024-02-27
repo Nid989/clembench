@@ -1,0 +1,24 @@
+You are provided with 3 grids, each of them is 5x5 in size.
+Empty cells are marked with "▢" and filled cells are marked with "X".
+The first grid is always the target grid and other 2 are distractor grids.
+
+Goal:
+    Your task is to generate a referring expression that best describes the target grid and distinguishes it from other distractor grids.
+
+Rules:
+    (a) Your response must follow the structure: "REASON: <some text> \nEXPRESSION: <some text>".
+    (b) Think step-by-step. Explain your reasoning under "REASON: <some text>" before generating the final expression under "EXPRESSION: <some text>".
+
+Let us start.
+
+Target grid:
+
+TARGET_GRID
+
+Distractor gird 1:
+
+SECOND_GRID
+
+Distractor grid 2:
+
+THIRD_GRID
