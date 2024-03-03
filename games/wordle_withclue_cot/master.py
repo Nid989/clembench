@@ -2,10 +2,10 @@ from typing import Dict, List
 
 from backends import Model
 from clemgame.clemgame import GameBenchmark, GameMaster, GameScorer
-from games.wordle.master import WordleGameMaster, WordleGameScorer
+from games.wordle_cot.master import WordleGameMaster, WordleGameScorer
 
 # this will resolve into subdirectories to find the instances
-GAME_NAME = "wordle_withclue"
+GAME_NAME = "wordle_withclue_cot"
 
 class WordleWithClueGameBenchmark(GameBenchmark):
     def __init__(self):

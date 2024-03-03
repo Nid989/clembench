@@ -1,5 +1,6 @@
 from typing import Dict, Tuple, List
 import re
+import json
 
 import numpy as np
 
@@ -24,6 +25,12 @@ GAME_NAME = "taboo_cot"
 logger = get_logger(__name__)
 
 
+def convert_to_json(response: str) -> Dict:
+    try:
+        return json.loads(response)
+    except json.JSONDecodeError as e:
+        return None
+
 class WordGuesser(Player):
 
     def __init__(self, model: Model):
@@ -47,17 +54,10 @@ class WordDescriber(Player):
             raise Exception("We should not be here...")
 
    
-def check_clue(clue: str, target_word: str, related_words: List[str],
+def check_clue(utterance: str, target_word: str, related_words: List[str],
                stemmer=EN_STEMMER) -> List[Dict]:
-    # find the text corresponding to describer model's `CLUE`
-    pattern = r"CLUE:(.*)"
-    matches = re.findall(pattern, clue, re.DOTALL)
-    if not matches:
-        errors.append({
-            "message": f"Unable to locate CLUE text.",
-            "type": 2
-        })
-    clue = matches[0].strip()
+    response_dict = convert_to_json(utterance)
+    clue = response_dict['CLUE'].strip()
     clue = string_utils.remove_punctuation(clue)
     clue = clue.split(" ")
     clue_words = [clue_word for clue_word in clue if clue_word not in EN_STOPWORDS]
@@ -135,10 +135,8 @@ class TabooCOT(DialogueGameMaster):
             error_type = self.clue_error["type"]
             if error_type == 0:
                 self.log_to_self("invalid clue", "clue contains target word")
-            if error_type == 0:
+            if error_type == 1:
                 self.log_to_self("invalid clue", "clue contains related word")
-            if error_type == 2: # TODO: add response for GM to handle this (similar to other invalid clue formats)
-                self.log_to_self("invalid clue", "unable to locate clue")
             return False # stop game if clue is wrong (for now)
         if self.guess_word == self.target_word:
             self.log_to_self("correct guess", self.guess_word)
@@ -148,18 +146,19 @@ class TabooCOT(DialogueGameMaster):
             return False
         return True
     
-    def _validate_describer_response(self, utterance: str) -> bool:
-        pattern = r"REASON:\s*(.*)\nCLUE:\s*(.*)"
-        _match = re.match(pattern, utterance, re.DOTALL) 
-        return bool(_match)
+    def _validate_JSON(self, utterance: str, valid_fields: List[str]):
+        response = convert_to_json(utterance)
+        if response is None:
+            return False
+        return all(field in response for field in valid_fields)
 
     def _validate_player_response(self, player: Player, utterance: str) -> bool:
         if player == self.guesser:
-            if not utterance.startswith("GUESS:"):
+            if not self._validate_JSON(utterance, ['REASON', 'GUESS']):
                 self.invalid_response = True
                 return False
         if player == self.describer:
-            if not self._validate_describer_response(utterance):
+            if not self._validate_JSON(utterance, ['REASON', 'CLUE']):
                 self.invalid_response = True
                 return False
             errors = check_clue(utterance, self.target_word, self.related_words)
@@ -169,38 +168,36 @@ class TabooCOT(DialogueGameMaster):
         self.log_to_self("valid format", "continue")
         return True
     
+    # NOTE: I think _on_parse_response should be also validate response and not just log the "assumed" correct format data.
     def _on_parse_response(self, player: Player, utterance: str) -> Tuple[str, bool]:
         if player == self.guesser:
-            utterance = utterance.replace("GUESS:", "")
+            utterance = convert_to_json(utterance)['GUESS']
             utterance = utterance.strip()
             utterance = utterance.lower()
             utterance = string_utils.remove_punctuation(utterance)
             self.guess_word = utterance.lower()
             self.log_to_self("guess", self.guess_word)
         if player == self.describer:
-            pattern = r"CLUE:(.*)"
-            matches = re.findall(pattern, utterance, re.DOTALL)
-            if matches:
-                utterance = matches[0].strip()
-                utterance = string_utils.remove_punctuation(utterance)
-                self.log_to_self("clue", utterance)
+            utterance = convert_to_json(utterance)['CLUE']
+            utterance = utterance.strip()
+            utterance = string_utils.remove_punctuation(utterance)
+            self.log_to_self("clue", utterance)
         return utterance, True
     
-    # TODO: handle the utterance segement relative to the `REASON`.
     def _after_add_player_response(self, player: Player, utterance: str):
         """
         Add the utterance to other player's history, 
         using the add_user_message(other_player, utterance) method.
         """
         if player == self.describer:
-            # guesser player should not see the `REASON` segment
+            utterance = utterance.strip()
             utterance = f"CLUE: {utterance}."
             self.add_user_message(self.guesser, utterance)
         if player == self.guesser:
             if self.guess_word != self.target_word:
                 utterance = f"GUESS: {self.guess_word}."
                 self.add_user_message(self.describer, utterance)
-
+                
     def _on_before_turn(self, turn_idx: int):
         if turn_idx == 0:
             self.log_message_to(self.guesser, self.guesser_initial_prompt)
