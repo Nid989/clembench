@@ -2,8 +2,6 @@ You are given three grids, where each of them is 5 by 5 in size.
 Grids have empty cells marked with "▢" and filled cells marked with "X".
 Your task is to generate a referring expression that best describes the target grid while distinguishing it from the two other distractor grids.
 
-Your task is to generate a referring expression that best describes the target grid while distinguishing it from the two other distractor grids.
-
 Your response should follow the JSON schema given below:
 {
 "REASON": "Explain the reasoning behind the referring expression for the given target grid.",
