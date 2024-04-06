@@ -7,17 +7,22 @@ To add a new experiment, append its config to EXPERIMENTS, what_slot and tags.
 import numpy as np
 
 GAME_NAME = 'privateshared_tom'
-EXPERIMENTS = ['travel-booking', 'job-interview', 'restaurant',
-               'things-places', 'letter-number']
+EXPERIMENTS = [
+    'travel-booking', 'job-interview', 'restaurant',
+    'things-places', 'letter-number',
+    'travel-booking-false-belief', 'travel-booking-perspective-taking' # TOM testing experiments 
+]
 N_INSTANCES = 10
 
-what_slot = {'travel-booking': 'Travel',
-             'job-interview': 'Job Application',
-             'restaurant': 'Restaurant',
-             'things-places': 'Things at places',
-             'letter-number': 'Numbered letters',
-             'travel-booking-false-belief': 'Travel',
-             'travel-booking-perspective-taking': 'Travel'}
+what_slot = {
+    'travel-booking': 'Travel',
+    'job-interview': 'Job Application',
+    'restaurant': 'Restaurant',
+    'things-places': 'Things at places',
+    'letter-number': 'Numbered letters',
+    'travel-booking-false-belief': 'Travel',  # travel booking with false belief (TOM)
+    'travel-booking-perspective-taking': 'Travel' # travel booking with perspective taking (TOM)
+}
 
 # paths to game resources
 PROBES_PATH = 'resources/texts/{}/probing_questions.json'
@@ -30,11 +35,15 @@ PROMPT_PATH = 'resources/initial_prompts/{}_{}'
 ANSWER = 'ANSWER: '
 ASIDE = 'ASIDE: '
 ME = 'ME: '
-tags = {'travel-booking': 'TRAVEL-AGENT',
-        'job-interview': 'RECRUITER',
-        'restaurant': 'WAITER',
-        'things-places': 'QUESTIONER',
-        'letter-number': 'QUESTIONER'}
+tags = {
+    'travel-booking': 'TRAVEL-AGENT',
+    'job-interview': 'RECRUITER',
+    'restaurant': 'WAITER',
+    'things-places': 'QUESTIONER',
+    'letter-number': 'QUESTIONER',
+    'travel-booking-false-belief': 'TRAVEL-AGENT',
+    'travel-booking-perspective-taking': 'TRAVEL-AGENT',  
+}
 
 # labels
 INVALID = 'NA'

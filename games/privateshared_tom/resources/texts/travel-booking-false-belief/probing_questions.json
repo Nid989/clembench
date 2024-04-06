@@ -1,54 +1,54 @@
 {
     "from": [
-      "If the travel agent believes that the travel is starting from $LOCATION$. Does the travel agent know where your trip is starting?",
-      "If the travel agent believes that the travel is starting from $LOCATION$. Have you told the travel agent where you are leaving from?",
-      "If the travel agent believes that the journey begins from $LOCATION$. Has the travel agent been informed about your place of departure?",
-      "If the travel agent believes that the journey is commencing from $LOCATION$. Does the travel agent already know your origin?",
-      "If the travel agent believes that the journey begins from $LOCATION$. If I asked the travel agent where you are leaving from, would he or she know the answer?",
-      "If the travel agent believes that the travel is starting from $LOCATION$. Is the travel agent aware of your origin?",
-      "If the travel agent believes that the departure point is $LOCATION$. Have you informed the travel agent about the place of departure?",
-      "If the travel agent believes that the departure is from $LOCATION$. Do you think the travel agent knows where you depart from?",
-      "If the travel agent believes that the journey is commencing from $LOCATION$. Have you already mentioned the origin of your trip to the travel agent?",
-      "If the travel agent believes that the departure point is $LOCATION$. Do you believe that the travel agent is aware of your place of departure?"
+      "The travel agent believes that the travel is starting from $VALUE$. Does the travel agent know where your trip is starting?",
+      "The travel agent believes that the travel is starting from $VALUE$. Have you told the travel agent where you are leaving from?",
+      "The travel agent believes that the journey begins from $VALUE$. Has the travel agent been informed about your place of departure?",
+      "The travel agent believes that the journey is commencing from $VALUE$. Does the travel agent already know your origin?",
+      "The travel agent believes that the journey begins from $VALUE$. If I asked the travel agent where you are leaving from, would he or she know the answer?",
+      "The travel agent believes that the travel is starting from $VALUE$. Is the travel agent aware of your origin?",
+      "The travel agent believes that the departure point is $VALUE$. Have you informed the travel agent about the place of departure?",
+      "The travel agent believes that the departure is from $VALUE$. Do you think the travel agent knows where you depart from?",
+      "The travel agent believes that the journey is commencing from $VALUE$. Have you already mentioned the origin of your trip to the travel agent?",
+      "The travel agent believes that the departure point is $VALUE$. Do you believe that the travel agent is aware of your place of departure?"
     ],
     "to": [
-      "If the travel agent believes that the journey finishes at $LOCATION$. Does the travel agent know where you want to go to?",
-      "If the travel agent believes that the destination point is $LOCATION$. Have you told the travel agent where you want to go to?",
-      "If the travel agent believes that the trip terminates at $LOCATION$. Has the travel agent been informed about your destination?",
-      "If the travel agent believes that the destination is $LOCATION$. Does the travel agent already know your destination?",
-      "If the travel agent believes that the destination is $LOCATION$. If I asked the travel agent where you want to go, would he or she know the answer?",
-      "If the travel agent believes that the trip terminates at $LOCATION$. Is the travel agent aware of your destination?",
-      "If the travel agent believes that the destination point is $LOCATION$. Have you informed the travel agent about your destination?",
-      "If the travel agent believes that the trip concludes at $LOCATION$. Do you think the travel agent knows where you want to go to?",
-      "If the travel agent believes that the journey ends at $LOCATION$. Have you already mentioned the destination of your trip to the travel agent?",
-      "If the travel agent believes that the journey is concluding at $LOCATION$ Do you believe that the travel agent is aware of where you are going?"
+      "The travel agent believes that the journey finishes at $VALUE$. Does the travel agent know where you want to go to?",
+      "The travel agent believes that the destination point is $VALUE$. Have you told the travel agent where you want to go to?",
+      "The travel agent believes that the trip terminates at $VALUE$. Has the travel agent been informed about your destination?",
+      "The travel agent believes that the destination is $VALUE$. Does the travel agent already know your destination?",
+      "The travel agent believes that the destination is $VALUE$. If I asked the travel agent where you want to go, would he or she know the answer?",
+      "The travel agent believes that the trip terminates at $VALUE$. Is the travel agent aware of your destination?",
+      "The travel agent believes that the destination point is $VALUE$. Have you informed the travel agent about your destination?",
+      "The travel agent believes that the trip concludes at $VALUE$. Do you think the travel agent knows where you want to go to?",
+      "The travel agent believes that the journey ends at $VALUE$. Have you already mentioned the destination of your trip to the travel agent?",
+      "The travel agent believes that the journey is concluding at $VALUE$. Do you believe that the travel agent is aware of where you are going?"
     ],
     "by": [
-      "If the travel agent believes that mode of transport is by $TRANSPORT$. Does the travel agent know how you wish to travel?",
-      "If the travel agent believes that mode of transportation is by $TRANSPORT$. Has the travel agent been informed about your preferred means of transportation?",
-      "If the travel agent believes that form of transportation is by $TRANSPORT$. Does the travel agent already know whether you go by plane or by train?",
-      "If the travel agent believes that way to travel is by $TRANSPORT$. If I asked the travel agent how you are travelling, would he or she know the answer?",
-      "If the travel agent believes that means of travel is by $TRANSPORT$. Is the travel agent aware of your means of transportation?",
-      "If the travel agent believes that form of transportation is by $TRANSPORT$. Do you think the travel agent knows how you want to travel?",
-      "If the travel agent believes that form of transportation is by $TRANSPORT$. Have you already mentioned the means of transportation of your trip to the travel agent?",
-      "If the travel agent believes that means of travel is by $TRANSPORT$. Do you believe that the travel agent is aware of how you are going to travel?"
+      "The travel agent believes that mode of transport is by $VALUE$. Does the travel agent know how you wish to travel?",
+      "The travel agent believes that mode of transportation is by $VALUE$. Has the travel agent been informed about your preferred means of transportation?",
+      "The travel agent believes that form of transportation is by $VALUE$. Does the travel agent already know whether you go by plane or by train?",
+      "The travel agent believes that way to travel is by $VALUE$. If I asked the travel agent how you are travelling, would he or she know the answer?",
+      "The travel agent believes that means of travel is by $VALUE$. Is the travel agent aware of your means of transportation?",
+      "The travel agent believes that form of transportation is by $VALUE$. Do you think the travel agent knows how you want to travel?",
+      "The travel agent believes that form of transportation is by $VALUE$. Have you already mentioned the means of transportation of your trip to the travel agent?",
+      "The travel agent believes that means of travel is by $VALUE$. Do you believe that the travel agent is aware of how you are going to travel?"
     ],
     "class": [
-      "If the travel agent believes the specified class as $CLASS$. Have you informed the travel agent about your class preference?",
-      "If the travel agent believes that the selected class is $CLASS$. Does the travel agent know your preference for class?",
-      "If the travel agent believes that the designated class is $CLASS$. Do you think the travel agent knows in which class the trip will happen?",
-      "If the travel agent believes that the chosen class is $CLASS$. Is the travel agent aware of which class you would like to book?"
+      "The travel agent believes the specified class as $VALUE$. Have you informed the travel agent about your class preference?",
+      "The travel agent believes that the selected class is $VALUE$. Does the travel agent know your preference for class?",
+      "The travel agent believes that the designated class is $VALUE$. Do you think the travel agent knows in which class the trip will happen?",
+      "The travel agent believes that the chosen class is $VALUE$. Is the travel agent aware of which class you would like to book?"
     ],
     "when": [
-      "If the travel agent believes your departure is $DATE$. Does the travel agent know when your trip starts?",
-      "If the travel agent believes the start date of the trip is $DATE$. Have you told the travel agent when you want to travel?",
-      "If the travel agent believes the start date of the trip is $DATE$. Has the travel agent been informed about the dates of your trip?",
-      "If the travel agent believes your journey starts $DATE$. Does the travel agent already know your preferred dates?",
-      "If the travel agent believes your departure is $DATE$. If I asked the travel agent when are you travelling, would he or she know the answer?",
-      "If the travel agent believes your departure is $DATE$. Is the travel agent aware of the dates of your trip?",
-      "If the travel agent believes the departure date is $DATE$. Have you informed the travel agent about your dates?",
-      "If the travel agent believes the start date of the trip is $DATE$. Do you think the travel agent knows when you want to leave?",
-      "If the travel agent believes the departure date is $DATE$. Have you already mentioned the dates of your trip to the travel agent?",
-      "If the travel agent believes the departure date is $DATE$. Do you believe that the travel agent is aware of when you are travelling?"
+      "The travel agent believes your departure is $VALUE$. Does the travel agent know when your trip starts?",
+      "The travel agent believes the start date of the trip is $VALUE$. Have you told the travel agent when you want to travel?",
+      "The travel agent believes the start date of the trip is $VALUE$. Has the travel agent been informed about the dates of your trip?",
+      "The travel agent believes your journey starts $VALUE$. Does the travel agent already know your preferred dates?",
+      "The travel agent believes your departure is $VALUE$. If I asked the travel agent when are you travelling, would he or she know the answer?",
+      "The travel agent believes your departure is $VALUE$. Is the travel agent aware of the dates of your trip?",
+      "The travel agent believes the departure date is $VALUE$. Have you informed the travel agent about your dates?",
+      "The travel agent believes the start date of the trip is $VALUE$. Do you think the travel agent knows when you want to leave?",
+      "The travel agent believes the departure date is $VALUE$. Have you already mentioned the dates of your trip to the travel agent?",
+      "The travel agent believes the departure date is $VALUE$. Do you believe that the travel agent is aware of when you are travelling?"
     ]
   }

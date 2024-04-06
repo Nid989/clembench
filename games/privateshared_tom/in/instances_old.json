@@ -7893,7 +7893,7 @@
               "class": "The cheapest",
               "when": "On March 3"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: London\nTO: Amsterdam\nBY: Plane\nCLASS: The cheapest\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: London\nTO: Amsterdam\nBY: Plane\nCLASS: The cheapest\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "when",
               "class",
@@ -7963,7 +7963,7 @@
               "class": "The most comfortable",
               "when": "Next Sunday"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Cologne\nTO: Moscow\nBY: Overnight bus\nCLASS: The most comfortable\nWHEN: Next Sunday\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Cologne\nTO: Moscow\nBY: Overnight bus\nCLASS: The most comfortable\nWHEN: Next Sunday\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "by",
               "to",
@@ -8033,7 +8033,7 @@
               "class": "The most comfortable",
               "when": "At the end of next week"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Frankfurt\nTO: Stuttgart\nBY: Boat\nCLASS: The most comfortable\nWHEN: At the end of next week\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Frankfurt\nTO: Stuttgart\nBY: Boat\nCLASS: The most comfortable\nWHEN: At the end of next week\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "to",
               "when",
@@ -8103,7 +8103,7 @@
               "class": "The cheapest",
               "when": "On March 3"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Copenhagen\nTO: Athens\nBY: Boat\nCLASS: The cheapest\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Copenhagen\nTO: Athens\nBY: Boat\nCLASS: The cheapest\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "when",
               "to",
@@ -8173,7 +8173,7 @@
               "class": "The cheapest",
               "when": "On August 15"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Stockholm\nTO: Stuttgart\nBY: Train\nCLASS: The cheapest\nWHEN: On August 15\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Stockholm\nTO: Stuttgart\nBY: Train\nCLASS: The cheapest\nWHEN: On August 15\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "by",
               "class",
@@ -8243,7 +8243,7 @@
               "class": "First",
               "when": "In May"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Rome\nTO: Dresden\nBY: Boat\nCLASS: First\nWHEN: In May\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Rome\nTO: Dresden\nBY: Boat\nCLASS: First\nWHEN: In May\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "by",
               "when",
@@ -8313,7 +8313,7 @@
               "class": "First",
               "when": "In two weeks"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Prague\nTO: Brussels\nBY: Taxi\nCLASS: First\nWHEN: In two weeks\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Prague\nTO: Brussels\nBY: Taxi\nCLASS: First\nWHEN: In two weeks\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "class",
               "when",
@@ -8383,7 +8383,7 @@
               "class": "The most comfortable",
               "when": "Third week of June"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Hamburg\nTO: Dresden\nBY: Overnight bus\nCLASS: The most comfortable\nWHEN: Third week of June\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Hamburg\nTO: Dresden\nBY: Overnight bus\nCLASS: The most comfortable\nWHEN: Third week of June\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "to",
               "by",
@@ -8453,7 +8453,7 @@
               "class": "The most comfortable",
               "when": "On March 3"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: London\nTO: Moscow\nBY: Train\nCLASS: The most comfortable\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: London\nTO: Moscow\nBY: Train\nCLASS: The most comfortable\nWHEN: On March 3\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "class",
               "to",
@@ -8523,7 +8523,7 @@
               "class": "First",
               "when": "In ten days"
             },
-            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Berlin\nTO: Lisbon\nBY: Rented Car\nCLASS: First\nWHEN: In ten days\n\nThe travel agent does not know about it yet. \n\nYou prefer assurance before belief. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
+            "initial_prompt": "You are a customer of a travel agency. Here is a description of the details of the travel you want to make:\n\nWHAT: Travel\nFROM: Berlin\nTO: Lisbon\nBY: Rented Car\nCLASS: First\nWHEN: In ten days\n\nThe travel agent does not know about it yet. \n\nQuestions from the travel agent will start with TRAVEL-AGENT. Please reply in the form: ANSWER: <some text>\n\nI will also ask you questions. These questions will start with ME: . Please answer these questions with: ASIDE: <some text>\n\nImportant: Give short, direct answers!\n\nLet us start.",
             "request_order": [
               "by",
               "from",

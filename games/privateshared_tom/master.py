@@ -6,6 +6,7 @@ Implementation of a game master that control the game mechanisms.
 from typing import List, Dict, Tuple
 
 import numpy as np
+import random
 from sklearn.metrics import accuracy_score as acc_score
 from sklearn.metrics import cohen_kappa_score
 
@@ -19,7 +20,7 @@ from games.privateshared_tom.game import PrivateSharedGame
 from games.privateshared_tom.constants import (
     GAME_NAME, PROBES_PATH, RETRIES_PATH, DUMMY_PROMPT, ANSWER, UPDATE,
     INVALID_LABEL, INVALID, PROBE, YES, NO, SUCCESS, NOT_SUCCESS, NOT_PARSED,
-    ASIDE, RESULT, ME)
+    ASIDE, RESULT, ME, SLOT_PATH)
 
 
 logger = get_logger(__name__)
@@ -36,6 +37,7 @@ class PrivateShared(GameMaster):
         probes_path = PROBES_PATH.format(self.subtype) 
         self.probing_questions = self.load_json(probes_path) # questions asked by the GM
         self.retries = self.load_json(RETRIES_PATH)['suffixes'] 
+        self.slot_values = self.load_json(SLOT_PATH.format(self.subtype)) # finite set of slot values (all possible values for each slot)
         # initialise necessary structure
         self.questioner_tag: str = None
         self.initial_prompt: str = None
@@ -58,15 +60,14 @@ class PrivateShared(GameMaster):
               requests: Dict[str, int],
               probes: Dict[int, Dict[str, int]],
               slots: Dict[str, str],
-              tag: str
-              ) -> None:
+              tag: str) -> None:
         
         # questioner tag used as identifier by the LLM 
         self.questioner_tag = f"{tag}: " 
         # set up initial prompt containing private information available to player LLM only!
         self.initial_prompt = initial_prompt
-        self.probing = probes 
-        self.probe_gt = {slot: i for i, slot in enumerate(request_order)}
+        self.probing = probes
+        self.probe_gt = {slot: i for i, slot in enumerate(request_order)} # just request order (i.e. order in which slots are filled w.r.t slot-categories)
         self.game = PrivateSharedGame(
             self.subtype, request_order, requests, slots, self.player_models[0])
         # one probing before the game starts and one after each request
@@ -75,12 +76,24 @@ class PrivateShared(GameMaster):
         self.request_counts = [0] * self.n_probe_turns
         self.parsed_request_counts = [0] * self.n_probe_turns
         self.violated_request_counts = [0] * self.n_probe_turns
+        if self.subtype == "travel-booking-false-belief":
+            self.false_belief_slots = self._sample_false_slot_values()
 
         self.log_players({
             'GM': 'Game master for privateshared',
             'Player 1': f'Answerer: {self.model_name}',
             'Player 2': 'Questioner: Programmatic'
             })
+
+    def _sample_false_slot_values(self) -> None:
+        """Sample false slot values for false belief experiment."""
+        slot_names = list(self.slot_values.keys())
+        random.shuffle(slot_names)
+        self.non_contrary_slots = slot_names[:2]
+        return {slot: random.choice(list(filter(lambda value: value != self.game.slots[slot], values))).lower() 
+                if slot not in self.non_contrary_slots 
+                else self.game.slots[slot].lower()
+                for slot, values in self.slot_values.items()}
 
     def play(self) -> None:
         self.log_next_turn()
@@ -218,21 +231,41 @@ class PrivateShared(GameMaster):
         self.log_key('Aborted', self.aborted)
         self.log_key('Played Probe Rounds', self.played_probing_rounds)
 
-    def _get_gt(self, turn_idx: int, question_type: str) -> int:
+    def _get_gt(self, turn_idx: int, question_type: str, question: str) -> int:
         """Retrieve the ground truth value for a slot at a given turn."""
-        return 1 if turn_idx > self.probe_gt[question_type] else 0
+        if self.subtype == "travel-booking-false-belief":
+            if question_type in self.non_contrary_slots: # non-contradicting beliefs
+                orig_question = question.split(".")[-1].strip()
+                if orig_question.split()[0].lower() in ["have", "has"]: # check if the question entails with customer informing the travel agent
+                    return 1 if turn_idx > self.probe_gt[question_type] else 0  
+                else: # check if the question entails with travel agent possessing the information/belief
+                    return 1 
+            else: # contradicting beliefs
+                return 0 # travel agent's belief contradicting the customer information
+        else:
+            return 1 if turn_idx > self.probe_gt[question_type] else 0
 
     def _create_probe_dic(self, turn_idx: int, key: str, idx: int) -> Dict:
         """Return the initialised probe dictionary."""
         question = self.probing_questions[key][idx]
         return {'target': key.upper(),
                 'question': PROBE.format(question),
-                'gt': self._get_gt(turn_idx, key)}
+                'gt': self._get_gt(turn_idx, key, question)}
 
     def _create_turn_probes(self, turn_idx: int) -> List[Dict]:
         """Return a list of probing dictionaries."""
         return [self._create_probe_dic(turn_idx, key, idx)
                 for key, idx in self.probing[str(turn_idx)].items()]
+
+    def _modify_false_belief_probes(self, probes: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Modify the probing questions for false belief."""
+        update_question = lambda probe: {
+            'target': probe['target'],
+            'question': probe['question'].replace('$VALUE$', self.false_belief_slots[probe['target'].lower()]),
+            'gt': probe['gt']
+        }
+        probes = list(map(update_question, probes))
+        return probes
 
     def probe(self, game: PrivateSharedGame) -> Tuple[List[Dict], bool]:
         """Perform a round of probing."""
@@ -240,6 +273,8 @@ class PrivateShared(GameMaster):
         self.log_event(from_='GM', to='GM', action=action)
         turn = game.current_turn
         probes = self._create_turn_probes(turn)
+        if self.subtype == "travel-booking-false-belief":
+            probes = self._modify_false_belief_probes(probes)
         success_by_round = []
         for probe in probes:
             history = game.messages.copy()
