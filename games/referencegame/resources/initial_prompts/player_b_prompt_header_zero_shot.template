@@ -5,15 +5,12 @@ Your task is to select the grid that matches the given referring expression.
 Generate only the number (in text) of the grid that matches the given expression by selecting first, second, or third.
 
 First:
-
 FIRST_GRID
 
 Second:
-
 SECOND_GRID
 
 Third:
-
 THIRD_GRID
 
 TARGET_EXPRESSION

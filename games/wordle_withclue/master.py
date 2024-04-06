@@ -7,7 +7,6 @@ from games.wordle.master import WordleGameMaster, WordleGameScorer
 # this will resolve into subdirectories to find the instances
 GAME_NAME = "wordle_withclue"
 
-
 class WordleWithClueGameBenchmark(GameBenchmark):
     def __init__(self):
         super().__init__(GAME_NAME)
