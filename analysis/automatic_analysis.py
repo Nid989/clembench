@@ -84,7 +84,7 @@ class clembench_emergence_scores_extractor:
         self.cllm_pairs = list(map(format_cllm_pair, self.models))
         self.relevant_scores = self._extract_relevant_scores()
         self.extracted_scores = self._process_scores()
-        self.filename = f"{self.clemgame}_{self.experiment_name}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
+        self.filename = f"{self.clemgame}_{self.experiment_name}_scores_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
         save_to_excel(self.extracted_scores, os.path.join(path_to_outputs_dir, self.filename))
 
     def _extract_relevant_scores(self):

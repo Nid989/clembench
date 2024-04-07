@@ -1,11 +1,14 @@
 import os
 import re
+import datetime
 import collections
 import pandas as pd
 from typing import Dict, List, Tuple, Union
 
-from constants import path_to_results_dir, game_level_types
-from analysis.utils import load_from_json, merge_dfs_on_columns, format_cllm_pair
+from constants import (
+    path_to_results_dir, game_level_types, path_to_outputs_dir
+)
+from analysis.utils import load_from_json, merge_dfs_on_columns, format_cllm_pair, save_to_excel
  
 # Extract the initial turn-wise interactions b/w game-master (gm) and player 1 (player1) for Taboo game
 class taboogame_init_data_formatter:
@@ -215,6 +218,8 @@ class clembench_emergence_annotation_extractor:
                                            for index, model_name in enumerate(self.models)]
         self.extracted_annotations = merge_dfs_on_columns(self.all_models_data_containers,
                                                           columns=["prompt_instruction"])
+        self.filename = f"{self.clemgame}_{self.experiment_name}_annotations_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
+        save_to_excel(self.extracted_annotations, os.path.join(path_to_outputs_dir, self.filename))
         
 if __name__ == "__main__":
     out = clembench_emergence_annotation_extractor(clemgame="referencegame", 
