@@ -8,7 +8,9 @@ from typing import Dict, List, Tuple, Union
 from constants import (
     path_to_results_dir, game_level_types, path_to_outputs_dir
 )
-from analysis.utils import load_from_json, merge_dfs_on_columns, format_cllm_pair, save_to_excel
+from analysis.utils import (
+    load_from_json, merge_dfs_on_columns, format_cllm_pair, save_to_excel, upload_to_s3
+)
  
 # Extract the initial turn-wise interactions b/w game-master (gm) and player 1 (player1) for Taboo game
 class taboogame_init_data_formatter:
@@ -283,6 +285,8 @@ class clembench_emergence_annotation_extractor:
                                                           columns=["prompt_instruction"])
         self.filename = f"{self.clemgame}_{self.experiment_name}_annotations_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
         save_to_excel(self.extracted_annotations, os.path.join(path_to_outputs_dir, self.filename))
+        # upload to s3 
+        upload_to_s3(self.filename, "im-bhavsar", delete_after_upload=True)
         
 if __name__ == "__main__":
     out = clembench_emergence_annotation_extractor(clemgame="imagegame", 

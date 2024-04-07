@@ -1,7 +1,7 @@
 import os
 
 path_to_results_dir = os.path.join(os.getcwd(), "results")
-path_to_outputs_dir = os.path.join(os.getcwd(), "outputs")
+path_to_outputs_dir = os.path.join(os.getcwd(), "outputs_")
 
 clemgames = ["taboo", "wordle", "wordle_withclue", "wordle_withcritic", "referencegame", "imagegame", "privateshared",
              "taboo_cot", "wordle_withclue_cot", "referencegame_cot", "imagegame_cot", "privateshared_tom"]
