@@ -94,7 +94,7 @@ class clembench_emergence_scores_extractor:
         return relevant_scores
 
     def _process_scores(self):
-        average_level_score = lambda aggregate_level_scores: sum([level_score for _, level_score in aggregate_level_scores.items()]) / len(aggregate_level_scores)
+        average_level_score = lambda aggregate_level_scores: np.mean(list(aggregate_level_scores.values()))
         average_group_episode_score = lambda level_scores: np.nanmean(np.nan_to_num(np.asarray(
             list(itertools.chain.from_iterable([episode_scores for _, episode_scores in level_scores.items()]))), nan=0))
 
@@ -116,4 +116,5 @@ if __name__ == "__main__":
     models = ["fsc-openchat-3.5-0106"]
     experiment_name = "test_experiment"
     clemgame = "privateshared_tom"
-    clembench_emergence_scores_extractor(clemgame, models, experiment_name)
+    out = clembench_emergence_scores_extractor(clemgame, models, experiment_name)
+    print(out.extracted_scores)
