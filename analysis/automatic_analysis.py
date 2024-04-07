@@ -12,7 +12,7 @@ from constants import (
     game_level_types, path_to_results_dir, path_to_outputs_dir, clemgames
 )
 from analysis.utils import (
-    load_from_json, save_to_excel, format_cllm_pair
+    load_from_json, save_to_excel, format_cllm_pair, upload_to_s3
 )
 
 warnings.filterwarnings("ignore")
@@ -85,7 +85,9 @@ class clembench_emergence_scores_extractor:
         self.relevant_scores = self._extract_relevant_scores()
         self.extracted_scores = self._process_scores()
         self.filename = f"{self.clemgame}_{self.experiment_name}_scores_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
-        save_to_excel(self.extracted_scores, os.path.join(path_to_outputs_dir, self.filename))
+        save_to_excel(self.extracted_scores, os.path.join(path_to_outputs_dir, self.filename)) # save file locally usually on server
+        # upload to s3 
+        upload_to_s3(self.filename, "im-bhavsar", delete_after_upload=True)
 
     def _extract_relevant_scores(self):
         relevant_scores = [self.clemgame_analysis.all_exp_cllms_pairs_scores[cllm_pair] 
