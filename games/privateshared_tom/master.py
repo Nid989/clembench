@@ -85,11 +85,14 @@ class PrivateShared(GameMaster):
             'Player 2': 'Questioner: Programmatic'
             })
 
-    def _sample_false_slot_values(self) -> None:
+    def _sample_false_slot_values(self, allow_non_contrary: bool=True) -> None:
         """Sample false slot values for false belief experiment."""
         slot_names = list(self.slot_values.keys())
-        random.shuffle(slot_names)
-        self.non_contrary_slots = slot_names[:2]
+        random.shuffle(slot_names) 
+        if allow_non_contrary:
+            self.non_contrary_slots = slot_names[:2]
+        else: 
+            self.non_contrary_slots = []
         return {slot: random.choice(list(filter(lambda value: value != self.game.slots[slot], values))).lower() 
                 if slot not in self.non_contrary_slots 
                 else self.game.slots[slot].lower()
