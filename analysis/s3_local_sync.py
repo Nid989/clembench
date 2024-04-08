@@ -1,5 +1,4 @@
 import os
-from tqdm import tqdm
 from constants import path_to_outputs_dir
 from utils import create_s3_client, download_from_s3
 
