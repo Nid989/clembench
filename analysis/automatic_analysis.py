@@ -115,8 +115,8 @@ class clembench_emergence_scores_extractor:
     
 if __name__ == "__main__":
     # Example usage
-    models = ["openchat-3.5-0106", "openchat-3.5-1210"]
+    models = ["openchat-3.5-0106", "openchat-3.5-1210", "Mistral-7B-Instruct-v0.1"]
     experiment_name = "test_experiment"
-    clemgame = "privateshared_tom"
+    clemgame = "referencegame"
     out = clembench_emergence_scores_extractor(clemgame, models, experiment_name)
     print(out.extracted_scores)
