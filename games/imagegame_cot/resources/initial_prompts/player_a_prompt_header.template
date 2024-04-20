@@ -16,7 +16,7 @@ X X X X X
 
 Your response should follow the JSON schema given below:
 {
-    "REASON": "Explaning the reason for the generating the current instruction.",
+    "REASON": "Explaining the reason for the generating the current instruction.",
     "INSTRUCTION": "The generated instruction."
 }
 

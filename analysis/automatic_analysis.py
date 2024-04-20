@@ -9,7 +9,7 @@ import pandas as pd
 from typing import List
 
 from constants import (
-    game_level_types, path_to_results_dir, path_to_outputs_dir, clemgames
+    game_level_types, path_to_results_dir, path_to_outputs_dir
 )
 from analysis.utils import (
     load_from_json, save_to_excel, format_cllm_pair, upload_to_s3
