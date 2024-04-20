@@ -24,5 +24,5 @@ def sync_local_with_s3(bucket_name: str="im-bhavsar"):
         print(f"Error syncing local directory with S3: {e}")
 
 if __name__ == "__main__":
-    sync_local_with_s3()    
+    sync_local_with_s3()
 

@@ -1,0 +1,61 @@
+# manual annotation
+manual_analysis:
+  selected_competencies:
+    - competency_name: world_knowledge
+      selected_games:
+        - game_name: taboo
+          levels:
+            - 2_low_en
+        - game_name: referencegame
+          levels:
+            - 2_diagonal_grids
+            - 3_letter_grids
+            - 5_random_grids
+        - game_name: wordle_withclue
+          levels:
+            - 1_medium_frequency_words_clue_no_critic
+    - competency_name: situation_modeling
+      selected_games:
+        - game_name: wordle_withclue
+          levels:
+            - 1_medium_frequency_words_clue_no_critic
+        - game_name: imagegame
+          levels:
+            - 1_random_grids
+  selected_model_groups:
+    - group_name: "gpt" # OpenAI/GPT-xs
+      group_model_names:
+        - gpt-3.5-turbo-0125
+        - gpt-4-0613
+        - gpt-4-1106-preview
+        - gpt-4-0125-preview
+    - group_name: "claude" # Anthropic/Claude-xs
+      group_model_names:
+        - claude-2.1
+        - claude-3-haiku-20240307
+        - claude-3-opus-20240229
+        - claude-3-sonnet-20240229
+    - group_name: "mistral" # MistralAI/mistral-xs
+      group_model_names:
+        - mistral-large-2402
+        - mistral-medium-2312
+
+# automatic analysis
+automatic_analysis:
+  selected_model_groups:
+    - group_name: "gpt" # OpenAI/GPT-xs
+      group_model_names:
+        - gpt-3.5-turbo-0125
+        - gpt-4-0613
+        - gpt-4-1106-preview
+        - gpt-4-0125-preview
+    - group_name: "claude" # Anthropic/Claude-xs
+      group_model_names:
+        - claude-2.1
+        - claude-3-haiku-2024307
+        - claude-3-opus-20240229
+        - claude-3-sonnet-20240229
+    - group_name: "mistral" # MistralAI/mistral-xs
+      group_model_names:
+        - mistral-large-2402
+        - mistral-medium-2312

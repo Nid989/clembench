@@ -1,6 +1,7 @@
 import os
 import re
-import datetime
+import itertools
+import functools
 import collections
 import pandas as pd
 from typing import Dict, List, Tuple, Union
@@ -9,7 +10,8 @@ from constants import (
     path_to_results_dir, game_level_types, path_to_outputs_dir
 )
 from analysis.utils import (
-    load_from_json, merge_dfs_on_columns, format_cllm_pair, save_to_excel, upload_to_s3
+    load_from_json, load_from_yaml, merge_dfs_on_columns, format_cllm_pair, 
+    save_to_excel, upload_to_s3
 )
  
 # Extract the initial turn-wise interactions b/w game-master (gm) and player 1 (player1) for Taboo game
@@ -156,18 +158,20 @@ class referencegame_data_formatter:
         episodes = sorted(episodes, key=lambda x: int(x.split("_")[-1]))
         for index, episode in enumerate(episodes):
             # load requests.json file
-            path_to_ep_requests_file = os.path.join(self.path_to_model_dir, f"./{self.clemgame}/{self.level}/{episode}/requests.json")
+            # path_to_ep_requests_file = os.path.join(self.path_to_model_dir, f"./{self.clemgame}/{self.level}/{episode}/requests.json")
+            path_to_ep_interactions_file = os.path.join(self.path_to_model_dir, f"./{self.clemgame}/{self.level}/{episode}/interactions.json")
             path_to_ep_instance_file = os.path.join(self.path_to_model_dir, f"./{self.clemgame}/{self.level}/{episode}/instance.json")
-            if os.path.exists(path_to_ep_requests_file):
-                requests_data = load_from_json(path_to_ep_requests_file)
+            if os.path.exists(path_to_ep_interactions_file):
+                interactions_data = load_from_json(path_to_ep_interactions_file)
                 instance_data = load_from_json(path_to_ep_instance_file)
-                interactions_player1 = self._extract_ep_interactions_player1(requests_data, instance_data)
+                interactions_player1 = self._extract_ep_interactions_player1(interactions_data, instance_data)
                 _ = [all_interactions_player1[key].append(value) for key, value in interactions_player1.items()]
         self.all_interactions_player1_df = pd.DataFrame(all_interactions_player1)
         self.all_interactions_player1_df[f"score_{self.cllm_name}"] = ''
             
-    def _extract_ep_interactions_player1(self, ep_requests_data: Dict, ep_instance_data: Dict):
-
+    def _extract_ep_interactions_player1(self, ep_interactions_data: Dict, ep_instance_data: Dict):
+        def extract_w_key_value_pair(turns_data: List[Dict[str, str]], key_value_pair_1: Tuple[str], key_value_pair_2: Tuple[str]):
+            return next((index, item) for index, item in enumerate(turns_data) if item.get(key_value_pair_1[0]) == key_value_pair_1[1] and item.get(key_value_pair_2[0]) == key_value_pair_2[1])
         def format_prompt_instruction(ep_instance_data: Dict[str, Union[int, str]]):
             player_1_target_grid = ep_instance_data["player_1_target_grid"]
             player_1_second_grid = ep_instance_data["player_1_second_grid"]
@@ -179,7 +183,7 @@ class referencegame_data_formatter:
             )
 
         prompt_instruction = format_prompt_instruction(ep_instance_data)
-        player1_response = ep_requests_data[0]["raw_response_obj"]["choices"][0]["message"]["content"]
+        player1_response = extract_w_key_value_pair(ep_interactions_data["turns"][0], ("from", "GM"), ("to", "GM"))[-1]["action"]["content"]
         return {
             "prompt_instruction": prompt_instruction,
             f"player1_response_{self.cllm_name}": player1_response
@@ -246,7 +250,7 @@ class imagegame_data_formatter:
         }
     
 class clembench_emergence_annotation_extractor:
-    def __init__(self, clemgame: str="taboo", level: str="0_high_en", models: List[str]=None, experiment_name: str=None, with_cot: bool=False):
+    def __init__(self, clemgame: str="taboo", level: str="0_high_en", models: List[str]=None, experiment_name: str=None, with_cot: bool=False, **kwargs):
         self.clemgame = clemgame
         self.level = level
         self.models = models
@@ -274,6 +278,11 @@ class clembench_emergence_annotation_extractor:
             "imagegame": "all_interactions_player2_df"
         }
 
+        if self.clemgame == "wordle_withclue":
+            merge_dfs_on_columns_ = functools.partial(merge_dfs_on_columns, columns=["prompt_instruction", "target_word"])
+        else:
+            merge_dfs_on_columns_ = functools.partial(merge_dfs_on_columns, columns=["prompt_instruction"])
+
         self.all_models_data_formatters = [manual_analysis_data_formatters[self.clemgame](cllm_name=model_name,
                                                                                           level=self.level,
                                                                                           with_cot=self.with_cot) 
@@ -281,17 +290,41 @@ class clembench_emergence_annotation_extractor:
 
         self.all_models_data_containers = [getattr(self.all_models_data_formatters[index], manual_analysis_data_containers[self.clemgame])
                                            for index, model_name in enumerate(self.models)]
-        self.extracted_annotations = merge_dfs_on_columns(self.all_models_data_containers,
-                                                          columns=["prompt_instruction"])
-        self.filename = f"{self.clemgame}_{self.experiment_name}_annotations_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xlsx"
+        self.extracted_annotations = merge_dfs_on_columns_(self.all_models_data_containers)
+
+        self.filename = "n_manual_annotations_{}_{}_{}.xlsx".format(
+            self.experiment_name,
+            self.clemgame,
+            self.level
+        )
         save_to_excel(self.extracted_annotations, os.path.join(path_to_outputs_dir, self.filename))
         # upload to s3 
         upload_to_s3(self.filename, "im-bhavsar", delete_after_upload=True)
         
 if __name__ == "__main__":
-    out = clembench_emergence_annotation_extractor(clemgame="imagegame", 
-                                                   level="0_compact_grids", 
-                                                   models=["fsc-openchat-3.5-0106"], 
-                                                   experiment_name="test_experiment", 
-                                                   with_cot=True)
-    print(out.extracted_annotations)
+    
+    ############### MAIN ###############
+    config = load_from_yaml("./analysis/gated_llms_config.yaml")
+
+    for group in config["manual_analysis"]["selected_model_groups"]:
+        for competency in config["manual_analysis"]["selected_competencies"]:
+            for game in competency["selected_games"]:
+                for game_level in game["levels"]:
+                    experiment_name = "{}_{}".format(group["group_name"], competency["competency_name"])
+                    out = clembench_emergence_annotation_extractor(
+                        clemgame=game["game_name"], 
+                        level=game_level, 
+                        models=group["group_model_names"],
+                        experiment_name=experiment_name,
+                        with_cot=False
+                    )
+    ####################################
+
+    ############### TEST ###############
+    # out = clembench_emergence_annotation_extractor(clemgame="referencegame", 
+    #                                                level="2_diagonal_grids", 
+    #                                                models=['claude-2.1', 'claude-3-haiku-20240307', 'claude-3-opus-20240229', 'claude-3-sonnet-20240229'], 
+    #                                                experiment_name="test_experiment", 
+    #                                                with_cot=False)
+    # print(out.extracted_annotations)
+    #################################### 
