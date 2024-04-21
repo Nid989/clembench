@@ -167,6 +167,8 @@ class referencegame_data_formatter:
                 interactions_player1 = self._extract_ep_interactions_player1(interactions_data, instance_data)
                 _ = [all_interactions_player1[key].append(value) for key, value in interactions_player1.items()]
         self.all_interactions_player1_df = pd.DataFrame(all_interactions_player1)
+        # drop duplicates, maintains the grid layout for player 1 unchanged, while introducing randomness to the grids of player 2.
+        self.all_interactions_player1_df.drop_duplicates(subset=["prompt_instruction"], keep="first", inplace=True)
         self.all_interactions_player1_df[f"score_{self.cllm_name}"] = ''
             
     def _extract_ep_interactions_player1(self, ep_interactions_data: Dict, ep_instance_data: Dict):
