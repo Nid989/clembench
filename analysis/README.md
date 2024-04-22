@@ -8,4 +8,4 @@
 
 - Additionally, the gdrive directory contains aggregation of files based on either `model-family` and `functional-competency` (for manual analysis functional-competencies available are `world-knowledge` and `situation-modeling`)
 
-- Notebook to handle the annotated data on gdrive [link](https://colab.research.google.com/drive/1-k_qW4043itsSGrDmNtUZjRBTbRUfC6p?usp=sharing)
+- Notebook to handle the annotated data on gdrive [here](https://colab.research.google.com/drive/1-k_qW4043itsSGrDmNtUZjRBTbRUfC6p?usp=sharing)
