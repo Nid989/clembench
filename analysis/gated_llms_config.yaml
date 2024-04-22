@@ -33,12 +33,12 @@ manual_analysis:
       group_model_names:
         - claude-2.1
         - claude-3-haiku-20240307
-        - claude-3-opus-20240229
         - claude-3-sonnet-20240229
+        - claude-3-opus-20240229
     - group_name: "mistral" # MistralAI/mistral-xs
       group_model_names:
-        - mistral-large-2402
         - mistral-medium-2312
+        - mistral-large-2402
 
 # automatic analysis
 automatic_analysis:
