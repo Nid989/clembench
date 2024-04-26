@@ -12,7 +12,7 @@ from constants import (
     game_level_types, path_to_results_dir, path_to_outputs_dir
 )
 from analysis.utils import (
-    load_from_json, save_to_excel, format_cllm_pair, upload_to_s3
+    load_from_json, save_to_excel, format_cllm_pair, upload_to_s3, load_from_yaml
 )
 
 warnings.filterwarnings("ignore")
@@ -112,11 +112,60 @@ class clembench_emergence_scores_extractor:
             output_scores["average_group_episode_score"].append(average_group_episode_score(cllm_pair_scores["level_scores"]))
 
         return pd.DataFrame(output_scores)
-    
+
+# combine models assigned to specific model family w/ clemscores based on configuration file
+def aggregate_models_w_clemscore(results_filename: str="results.csv", 
+                                 config: dict=None):
+    path_to_results_filename = os.path.join(path_to_results_dir, results_filename)
+    results_data = pd.read_csv(path_to_results_filename)
+
+    def groupby_w_repeat_column_headers(data: pd.DataFrame, groupby_column_name: str="model_family"):
+        grouped_data = data.groupby(groupby_column_name)    
+        output_rows = []
+        for name, group in grouped_data:
+            output_rows.append(group.columns)
+            for _, row in group.iterrows():
+                output_rows.append(list(row))
+        output_df = pd.DataFrame(output_rows[1:], columns=output_rows[0])
+        return output_df
+
+    skipped_models = collections.defaultdict(list)
+    output = collections.defaultdict(list)
+    for model_family in config["selected_model_groups"]:
+        if model_family["group_by_parameters"]: # if model family is grouped by `parameters`
+            group_name = model_family["group_name"]
+            group_model_names = model_family["group_model_names"]
+            for model_name in group_model_names:
+                cllm_pair_name = "{}-t0.0--{}-t0.0".format(model_name, model_name)
+                filtered_data = results_data[results_data['Unnamed: 0'] == cllm_pair_name]
+                if not filtered_data.empty:
+                    clemscore = filtered_data['-, clemscore'].iloc[0]
+                    output["model_family"].append(group_name)
+                    output["model_name"].append(model_name)
+                    output["cllm_pair_name"].append(cllm_pair_name)
+                    output["clemscore"].append(clemscore)
+                else:
+                    skipped_models[group_name].append(model_name)
+
+    output_df = pd.DataFrame(output)
+    formatted_output_df = groupby_w_repeat_column_headers(output_df)
+    formatted_output_df.to_excel("./aggregated_models_w_clemscore.xlsx", index=False)
+    output_filename = "aggregated_models_w_clemscore.xlsx"
+    save_to_excel(formatted_output_df, os.path.join(path_to_outputs_dir, 
+                                                    output_filename)) # save file locally usually on server
+    # upload to s3 
+    upload_to_s3(output_filename, "im-bhavsar", delete_after_upload=True)
+
 if __name__ == "__main__":
-    # Example usage
-    models = ["openchat-3.5-0106", "openchat-3.5-1210", "Mistral-7B-Instruct-v0.1"]
-    experiment_name = "test_experiment"
-    clemgame = "referencegame"
-    out = clembench_emergence_scores_extractor(clemgame, models, experiment_name)
-    print(out.extracted_scores)
+    # # Example usage
+    # models = ["openchat-3.5-0106", "openchat-3.5-1210"]
+    # experiment_name = "test_experiment"
+    # clemgame = "privateshared_tom"
+    # out = clembench_emergence_scores_extractor(clemgame, models, experiment_name)
+    # print(out.extracted_scores)
+    
+    # combine models assigned to specific model family w/ clemscores 
+    config = load_from_yaml("./analysis/clembench_runs_config.yaml")
+
+    aggregate_models_w_clemscore(results_filename="results.csv", 
+                                 config=config)

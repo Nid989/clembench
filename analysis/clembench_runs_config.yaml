@@ -1,0 +1,40 @@
+selected_model_groups:
+  # gated models 
+  - group_name: "gpt" # OpenAI/GPT-xs
+    group_model_names:
+      - gpt-3.5-turbo-0125
+      - gpt-4-0613
+      - gpt-4-1106-preview
+      - gpt-4-0125-preview
+    group_by_parameters: False
+  - group_name: "claude" # Anthropic/Claude-xs
+    group_model_names:
+      - claude-2.1
+      - claude-3-haiku-20240307
+      - claude-3-sonnet-20240229
+      - claude-3-opus-20240229
+    group_by_parameters: False
+  - group_name: "mistral" # MistralAI/mistral-xs
+    group_model_names:
+      - mistral-medium-2312
+      - mistral-large-2402
+    group_by_parameters: False
+  # ungated models
+  - group_name: "llama3" # meta-AI/Llama-3-xb-chat-hf
+    group_model_names:
+      - Llama-3-8b-chat-hf
+      - Llama-3-70b-chat-hf
+    group_by_parameters: True
+  - group_name: "qwen1.5" # Qwen/Qwen1.5-xB-Chat
+    group_model_names:
+      - Qwen1.5-0.5B-Chat
+      - Qwen1.5-1.8B-Chat
+      - Qwen1.5-7B-Chat
+      - Qwen1.5-14B-Chat
+      - Qwen1.5-32B-Chat
+    group_by_parameters: True
+  - group_name: "sheep-duck-llama" # Riid/sheep-duck-llama-2-xb
+    group_model_names:
+      - sheep-duck-llama-2-13b
+      - sheep-duck-llama-2-70b-v1.1
+    group_by_parameters: True
