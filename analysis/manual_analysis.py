@@ -312,7 +312,7 @@ if __name__ == "__main__":
         for competency in config["manual_analysis"]["selected_competencies"]:
             for game in competency["selected_games"]:
                 for game_level in game["levels"]:
-                    experiment_name = "{}_{}".format(group["group_name"], competency["competency_name"])
+                    experiment_name = "gated_{}_{}".format(group["group_name"], competency["competency_name"])
                     out = clembench_emergence_annotation_extractor(
                         clemgame=game["game_name"], 
                         level=game_level, 
