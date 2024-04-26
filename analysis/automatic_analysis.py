@@ -169,6 +169,3 @@ if __name__ == "__main__":
 
     aggregate_models_w_clemscore(results_filename="results.csv", 
                                  config=config)
-
-# things I need to do
-# given a model family it will extract all these models and put them in a list
