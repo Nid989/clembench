@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from clemgame import get_logger
-from games.wordle.utils.prompt_truncator import num_tokens_from_messages
+from games.wordle_nocot.utils.prompt_truncator import num_tokens_from_messages
 
 logger = get_logger(__name__)
 
@@ -21,9 +21,6 @@ class PromptGenerator:
     ):
         self.system_definition = system_definition
         self.guesser_prompt = guesser_prompt
-        print(type(self.guesser_prompt))
-        print("-------------------")
-        print(self.guesser_prompt)
         self.guesser_critic_prompt = guesser_critic_prompt
 
         self.use_system_message = use_system_message
@@ -65,7 +62,7 @@ class PromptGenerator:
             utterance.append(
                 {
                     "role": "assistant",
-                    "content": "guess:" + guess + "\nexplanation:" + explanation + "\n",
+                    "content": "guess:" + guess + "\n",
                 }
             )
             if self.use_critic:
@@ -112,6 +109,7 @@ class PromptGenerator:
     ):
         utterance = []
 
+        # IGNORE
         if for_critic:
             utterance.append(
                 {
@@ -132,6 +130,7 @@ class PromptGenerator:
             prompt.extend(utterance)
             return utterance
 
+        # IGNORE
         if self.use_critic:
             # Add a clue
             utterance.append(
@@ -152,10 +151,11 @@ class PromptGenerator:
             utterance.append(
                 {
                     "role": "assistant",
-                    "content": "guess:" + guess + "\nexplanation:" + explanation + "\n",
+                    "content": "guess:" + guess + "\n",
                 }
             )
 
+        # TODO: look into this part below
         # If no feedback to be given, retry the same prompt
         if self.use_error_explanation:
             # Can add feedback to the prompt
