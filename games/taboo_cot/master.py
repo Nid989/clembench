@@ -147,13 +147,9 @@ class TabooCOT(DialogueGameMaster):
         return True
     
     def _validate_JSON(self, utterance: str, valid_fields: List[str]):
-        print(utterance)
         response = convert_to_json(utterance)
-        print(response)
         if response is None:
             return False
-        print("--------")
-        print(all(field in response for field in valid_fields))
         return all(field in response for field in valid_fields)
 
     def _validate_player_response(self, player: Player, utterance: str) -> bool:
@@ -180,13 +176,11 @@ class TabooCOT(DialogueGameMaster):
             utterance = utterance.lower()
             utterance = string_utils.remove_punctuation(utterance)
             self.guess_word = utterance.lower()
-            print("guess", self.guess_word)
             self.log_to_self("guess", self.guess_word)
         if player == self.describer:
             utterance = convert_to_json(utterance)['CLUE']
             utterance = utterance.strip()
             utterance = string_utils.remove_punctuation(utterance)
-            print("clue", utterance)
             self.log_to_self("clue", utterance)
         return utterance, True
     

@@ -77,7 +77,7 @@ class ReferenceGameCOTMaster(GameMaster):
 
         player_1_response = convert_to_json(player_1_response_text)
         if player_1_response:
-            if not all(key in player_1_response for key in ['REASON', 'EXPRESSION']):
+            if not all(key in player_1_response for key in ['Let\'s think step by step', 'EXPRESSION']):
                 # if the Player 1 message; JSON output contains missing fields.
                 # log the message and abort the game
                 action = {'type': 'invalid format', 'content': 'Invalid generated expression - missing fields',
@@ -124,7 +124,7 @@ class ReferenceGameCOTMaster(GameMaster):
 
         player_2_response = convert_to_json(player_2_response_text)
         if player_2_response:
-            if not all(key in player_2_response for key in ['REASON', 'ANSWER']):
+            if not all(key in player_2_response for key in ['Let\'s think step by step', 'ANSWER']):
                 # if the Player 1 message; JSON output contains missing fields.
                 # log the message and abort the game
                 action = {'type': 'invalid format', 'content': 'Invalid generated choice - missing fields',
@@ -140,7 +140,7 @@ class ReferenceGameCOTMaster(GameMaster):
                               'original_content': player_2_response_text}
                     self.log_event(from_="GM", to="GM", action=action)
                     self.parsed_request_count += 1
-                    player_1_response_text = parsed_instruction
+                    player_2_response_text = parsed_instruction
                 else:
                     # if the Player 2 message; JSON output field doesn't contain the expected values.
                     # lof the message and abort the game
@@ -197,7 +197,7 @@ class ReferenceGameCOTScorer(GameScorer):
             episode_request_count += 1
 
             player_1_message_dict = convert_to_json(player_1_message)
-            if player_1_message_dict and all(key in player_1_message_dict for key in ['REASON', 'EXPRESSION']):
+            if player_1_message_dict and all(key in player_1_message_dict for key in ['Let\'s think step by step', 'EXPRESSION']):
                 turn_parsed_request_count += 1
                 episode_parsed_request_count += 1
             else:
@@ -214,7 +214,7 @@ class ReferenceGameCOTScorer(GameScorer):
             episode_request_count += 1
 
             player_2_message_dict = convert_to_json(player_2_message)
-            if player_2_message_dict and all(key in player_2_message_dict for key in ['REASON', 'ANSWER']):
+            if player_2_message_dict and all(key in player_2_message_dict for key in ['Let\'s think step by step', 'ANSWER']):
                 turn_parsed_request_count += 1
                 episode_parsed_request_count += 1
                 # check if the target grid number matches the output from Player 2

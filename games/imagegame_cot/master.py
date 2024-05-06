@@ -102,7 +102,7 @@ class ImageGameCOTMaster(GameMaster):
             # terminate the game play when the message doesn't follow the output structure
             self.game.terminate = True
             return     
-        elif not all(key in player_1_response_dict for key in ['REASON', 'INSTRUCTION']):
+        elif not all(key in player_1_response_dict for key in ['Let\'s think step by step', 'INSTRUCTION']):
             # if the Player 1 message; JSON output contains missing fields.
             # log the message and abort the game
             action = {'type': 'invalid format', 'content': 'Invalid generated choice - missing fields',
@@ -182,6 +182,9 @@ class ImageGameCOTMaster(GameMaster):
 
         self.game.current_turn += 1
 
+def check_for_json_validity(response: str) -> bool:
+    parsed_response = convert_to_json(response)
+    return parsed_response is not None and "INSTRUCTION" in parsed_response
 
 class ImageGameScorer(GameScorer):
 
@@ -221,19 +224,21 @@ class ImageGameScorer(GameScorer):
             player_1_message = turn[1]['action']['content']
 
             # Player generates "DONE"
-            match = re.match(self.player1_terminate_pattern, player_1_message)
-            if match:
-                break
+            # NOTE: this is redundant but doing it twice for safety
+            if check_for_json_validity(player_1_message):
+                parsed_instruction = convert_to_json(player_1_message)["INSTRUCTION"]
+                match = re.match(self.player1_terminate_pattern, parsed_instruction)
+                if match:
+                    break
 
             turn_request_count += 1
             episode_request_count += 1
 
             # check the Player 1 message if it matches the rule, start with "Instruction:"
-            player_1_message_matched = re.compile(self.player1_response_pattern).match(player_1_message)
-            if player_1_message_matched:
-                if '\n' in player_1_message:
-                    parsed_instruction = player_1_message.split('\n')[0]
-                    player_1_message = parsed_instruction
+            player_1_message_matched = check_for_json_validity(player_1_message)
+            if player_1_message_matched:    
+                parsed_instruction = convert_to_json(player_1_message)["INSTRUCTION"]
+                player_1_message = parsed_instruction
 
                 turn_parsed_request_count += 1
                 episode_parsed_request_count += 1
@@ -247,6 +252,7 @@ class ImageGameScorer(GameScorer):
             # check if the turn includes the Player 2 message
             # in case the turn doesn't include an item and index position 4, it means the game has been aborted
             if len(turn) < 4:
+                print(turn)
                 aborted = True
                 break
 
@@ -264,7 +270,6 @@ class ImageGameScorer(GameScorer):
                 turn_violated_request_count += 1
                 episode_violated_request_count += 1
                 aborted = True
-                break
 
             # calculate player-specific and turn-specific metrics
 

@@ -5,15 +5,15 @@ You are also given a referring expression that describes one of the given grids.
 Your task is to select the grid that matches the given referring expression.
 
 Your response should follow the JSON schema given below:
-{
-"REASON": "Explain the reasoning for choosing the grid that matches the given expression.",
-"ANSWER": "Number (in text) of the grid that matches the given expression by either selecting first, second or third."
+{                           
+"Let's think step by step": "reasoning why selecting a grid that matches the given expression",
+"ANSWER": "number (in text) of the grid that matches the given expression by either selecting first, second or third."
 }
 
 Expression:
 TARGET_EXPRESSION
 
-First:
+First
 FIRST_GRID
 
 Second:

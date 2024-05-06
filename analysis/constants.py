@@ -1,7 +1,7 @@
 import os
 
-# path_to_results_dir = os.path.join(os.getcwd(), "results")
-path_to_results_dir = "../Desktop/clembench-runs/v1.5"
+path_to_results_dir = os.path.join(os.getcwd(), "results")
+# path_to_results_dir = "../Desktop/clembench-runs/v1.5"
 path_to_outputs_dir = os.path.join(os.getcwd(), "outputs_")
 
 clemgames = ["taboo", "wordle", "wordle_withclue", "wordle_withcritic", "referencegame", "imagegame", "privateshared",
