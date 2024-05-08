@@ -53,6 +53,7 @@ class clembench_emergence_automatic_analysis:
                     )
                     # TODO: add code for other scores specific to the game
                     level_scores[level].append(score)
+                    print(level, episode, score)
                 except Exception as e:
                     file_w_errors.append(f"{path_to_cllm_clemgame_level_dir}/{episode} {e}")
         
@@ -67,8 +68,9 @@ class clembench_emergence_automatic_analysis:
         self.all_exp_cllms_pairs_scores = dict()
         for cllm_pair in self.all_exp_cllms_pairs:
             # if cllm_pair not in ["Llama-3-8b-chat-hf-t0.0--Llama-3-8b-chat-hf-t0.0", "Llama-3-70b-chat-hf-t0.0--Llama-3-70b-chat-hf-t0.0"]: 
-            if cllm_pair not in ["Llama-3-8B-Instruct-t0.0--Llama-3-8B-Instruct-t0.0", "Llama-3-70B-Instruct-t0.0--Llama-3-70B-Instruct-t0.0"]: 
+            # if cllm_pair not in ["Llama-3-8B-Instruct-t0.0--Llama-3-8B-Instruct-t0.0", "Llama-3-70B-Instruct-t0.0--Llama-3-70B-Instruct-t0.0"]: 
             # if cllm_pair not in ["Llama-3-70B-Instruct-t0.0--Llama-3-70B-Instruct-t0.0"]:
+            if cllm_pair not in ["Mixtral-8x7B-Instruct-v0.1-t0.0--Mixtral-8x7B-Instruct-v0.1-t0.0", "Mixtral-8x22B-Instruct-v0.1-t0.0--Mixtral-8x22B-Instruct-v0.1-t0.0"]:
                 continue
             self.all_exp_cllms_pairs_scores[cllm_pair] = self._derive_level_scores(cllm_pair)
 
@@ -103,7 +105,6 @@ class clembench_emergence_scores_extractor:
         average_level_score = lambda aggregate_level_scores: np.mean(list(aggregate_level_scores.values()))
         average_group_episode_score = lambda level_scores: np.nanmean(np.nan_to_num(np.asarray(
             list(itertools.chain.from_iterable([episode_scores for _, episode_scores in level_scores.items()]))), nan=0))
-
         output_scores = collections.defaultdict(list)
         for model_name, cllm_pair_scores in zip(self.models, self.relevant_scores):
             output_scores["model"].append(model_name) 
@@ -162,11 +163,12 @@ def aggregate_models_w_clemscore(results_filename: str="results.csv",
 
 if __name__ == "__main__":
     # # Example usage
-    models = ["Llama-3-8B-Instruct", "Llama-3-70B-Instruct"]
+    # models = ["Llama-3-8B-Instruct", "Llama-3-70B-Instruct"]
     # models = ["Llama-3-70B-Instruct"]
     # models = ["Llama-3-8b-chat-hf", "Llama-3-70b-chat-hf"]
+    models = ["Mixtral-8x7B-Instruct-v0.1", "Mixtral-8x22B-Instruct-v0.1"]
     experiment_name = "taboo_emergence_scores"
-    clemgame = "imagegame_cot"
+    clemgame = "referencegame_cot"
     out = clembench_emergence_scores_extractor(clemgame, models, experiment_name)
     print(out.extracted_scores)
     
