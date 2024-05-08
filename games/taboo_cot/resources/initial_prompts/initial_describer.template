@@ -11,8 +11,8 @@ End conditions:
 
 Your response should follow the JSON schema given below:
 {
-"REASON": "Explain the reasoning leading to the description of the given target word.",
-"CLUE": "Description of the given target word."
+"Let's think step by step": "reasoning why particular description suits the given target word",
+"CLUE": "description of given target word"
 }
 
 Let us start.
@@ -25,8 +25,6 @@ Related words are:
 
 $REL_WORD$
 
-Important
+Important: 
 - You are under time pressure, give short descriptions that are to the point!
-- Let's think step-by-step. Do not generate anything else except for the JSON output.
-
-
+- Do not generate anything else except for the JSON output.
