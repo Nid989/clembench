@@ -199,3 +199,5 @@ cython_debug/
 access_tokens.yaml
 # output directory to save annotation files
 outputs_
+cache_results/
+games/cache/

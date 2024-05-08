@@ -1,6 +1,6 @@
 import random
 
-from games.wordle.instancegenerator import WordleGameInstanceGenerator
+from games.wordle_cot.instancegenerator import WordleGameInstanceGenerator
 
 GAME_NAME = "wordle_withclue"
 

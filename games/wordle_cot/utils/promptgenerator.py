@@ -53,7 +53,7 @@ class PromptGenerator:
             if self.use_clue:
                 # Add a clue
                 prompt[-1]["content"] = (
-                    prompt[-1]["content"].replace("$CLUE$", "clue:" + self.target_word_clue.strip())
+                    prompt[-1]["content"] + "clue:" + self.target_word_clue + "\n"
                 )
             utterance = prompt.copy()
         else:
@@ -63,7 +63,7 @@ class PromptGenerator:
                 {
                     "role": "assistant",
                     # "content": "guess:" + guess + "\nexplanation:" + explanation + "\n",
-                    "content": "{{\n\"REASON\": \"{0}\",\n\"GUESS\": \"{1}\"\n}}".format(explanation, guess)
+                    "content": "{{\n\"Let's think step by step\": \"{0}\",\n\"GUESS\": \"{1}\"\n}}".format(explanation, guess)
                 }
             )
             if self.use_critic:
@@ -151,7 +151,7 @@ class PromptGenerator:
                 {
                     "role": "assistant",
                     # "content": "guess:" + guess + "\nexplanation:" + explanation + "\n",
-                    "content": "{{\n\"REASON\": \"{0}\",\n\"GUESS\": \"{1}\"\n}}".format(explanation, guess)
+                    "content": "{{\n\"Let's think step by step\": \"{0}\",\n\"GUESS\": \"{1}\"\n}}".format(explanation, guess)
                 }
             )
 
@@ -162,28 +162,28 @@ class PromptGenerator:
                 utterance.append(
                     {
                         "role": "user",
-                        "content": "the word should have exactly 5 letters. Please try again",
+                        "content": "the guess word should have exactly 5 letters. Please try again",
                     }
                 )
             elif error == "INVALID_WORD":
                 utterance.append(
                     {
                         "role": "user",
-                        "content": "the word should contain only alphabets. Please try again",
+                        "content": "the guess word should contain only alphabets. Please try again",
                     }
                 )
             elif error == "NOT_VALID_ENGLISH_WORD":
                 utterance.append(
                     {
                         "role": "user",
-                        "content": "your guess is not a valid word for this game. Please try again",
+                        "content": "your guess word is not a valid word for this game. Please try again",
                     }
                 )
             elif error == "INVALID_FORMAT":
                 utterance.append(
                     {
                         "role": "user",
-                        "content": "Provide your response only in this format:\nguess:word\nexplanation:details.\nPlease try again",
+                        "content": "Your response should follow the JSON schema given below.\n{\n\"Let's think step by step\": \"reasoning why selecting a guess word for the current interaction.\",\n\"GUESS\": \"A five letters guess word.\"\n}\nReasoning should be short and concise.\nPlease try again",
                     }
                 )
         else:
@@ -191,7 +191,7 @@ class PromptGenerator:
             utterance.append(
                 {
                     "role": "user",
-                    "content": "guess an english five letter word Provide your response only in this format:\nguess:word\nexplanation:details.\nPlease try again",
+                    "content": "guess an english five letter. Your response should follow the JSON schema given below.\n{\n\"Let's think step by step\": \"reasoning why selecting a guess word for the current interaction.\",\n\"GUESS\": \"A five letters guess word.\"\n}\nReasoning should be short and concise.\nPlease try again",
                 }
             )
         prompt.extend(utterance)

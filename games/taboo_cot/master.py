@@ -141,6 +141,10 @@ class TabooCOT(DialogueGameMaster):
         if self.guess_word == self.target_word:
             self.log_to_self("correct guess", self.guess_word)
             return False
+        if self.guess_word is not None:
+            if EN_STEMMER.stem(self.guess_word) == EN_STEMMER.stem(self.target_word):
+                self.log_to_self("correct guess", self.guess_word)
+                return False 
         if self.current_turn >= self.max_turns:
             self.log_to_self("max turns reached", str(self.max_turns))
             return False
