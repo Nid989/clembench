@@ -5,12 +5,12 @@ from backends import Model, HumanModel
 from clemgame.clemgame import GameMaster, GameBenchmark, GameScorer
 from clemgame import get_logger
 import clemgame.metrics as metrics
-from games.wordle_cot.game import WordleGame
-from games.wordle_cot.utils.compute_metrics import ComputeMetrics
-from games.wordle_cot.utils.guessvalidator import GuessValidator
+from games.wordle_nocot.game import WordleGame
+from games.wordle_nocot.utils.compute_metrics import ComputeMetrics
+from games.wordle_nocot.utils.guessvalidator import GuessValidator
 
 logger = get_logger(__name__)
-GAME_NAME = "wordle_cot"
+GAME_NAME = "wordle_nocot"
 
 
 class WordleGameMaster(GameMaster):

@@ -4,20 +4,17 @@ Your task is to generate a referring expression that best describes the target g
 
 Your response should follow the JSON schema given below:
 {
-"REASON": "Explain the reasoning behind the referring expression for the given target grid.",
-"EXPRESSION": "Referring expression for the given target grid."
+"Let's think step by step": "reasoning why the referring expression for the given target grid.",
+"EXPRESSION": "referring expression for the given target grid"
 }
 
 Target grid:
-
 TARGET_GRID
 
 Distractor grid 1:
-
 SECOND_GRID
 
 Distractor grid 2:
-
 THIRD_GRID
 
 Let's think step-by-step. Do not generate anything else except for the JSON output.

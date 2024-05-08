@@ -1,22 +1,15 @@
-import json
 from typing import Dict, List
 
 from backends import Model
 from clemgame import get_logger
-from games.wordle_cot.utils.guesser import Guesser
-from games.wordle_cot.utils.critic import Critic
-from games.wordle_cot.utils.promptgenerator import PromptGenerator
+from games.wordle_nocot.utils.guesser import Guesser
+from games.wordle_nocot.utils.critic import Critic
+from games.wordle_nocot.utils.promptgenerator import PromptGenerator
 
 
 logger = get_logger(__name__)
 
 
-def convert_to_json(response: str) -> Dict:
-    try:
-        return json.loads(response)
-    except json.JSONDecodeError as e:
-        return None
-    
 class WordleGame:
     def __init__(
         self,
@@ -122,13 +115,14 @@ class WordleGame:
         self,
         for_critic,
         guess,
-        explanation,
-        guess_feedback,
+        explanation,  
+        guess_feedback, 
         agreement,
         agreement_explanation,
         error,
     ):
-        if for_critic:
+
+        if for_critic: 
             if not error:
                 utterance = self.promptgen.create_critic_prompt(
                     guess,
@@ -180,6 +174,7 @@ class WordleGame:
                     logger.debug(
                         f"Attempt [{self.attempts}] | Guess_Status [{guess_feedback}]"
                     )
+                # Mod: I think the utterance once the model response is recieved 
                 utterance = self.promptgen.create(
                     guess,
                     explanation,
@@ -188,7 +183,6 @@ class WordleGame:
                     agreement,
                     agreement_explanation,
                 )
-
             else:
                 if error != "NOT_VALID_ENGLISH_WORD":
                     # Retry count is incremented only if the guess doesn't
@@ -203,10 +197,11 @@ class WordleGame:
                     # to generate a valid word
                     self.guesser_retry_invalid_word += 1
 
+                # Mod: I think the utterance once the model response is recieved
                 utterance = self.promptgen.recreate(
                     error,
                     guess,
-                    explanation,
+                    explanation, # Explanation 
                     self.guesser_prompt,
                     agreement,
                     agreement_explanation,
@@ -278,16 +273,6 @@ class WordleGame:
         if all("green" in color for color in colors):
             self.terminate = True
 
-    def find_keyword_match_JSON(self, response, keyword):
-        response_dict = convert_to_json(response)
-        if response_dict is not None:
-            if all(key in response_dict for key in ["Let's think step by step", "GUESS"]):
-                return response_dict[keyword].strip()
-            else:
-                return "INVALID_FORMAT"             
-        else:
-            return "INVALID_FORMAT"
-
     def find_keyword_match(self, text, keyword):
         # response contains the data in the format of guess:.. explanation:..
         # hence adding a colon to the keyword to find the exact match
@@ -308,9 +293,9 @@ class WordleGame:
 
         else:
             # Adding additional new line to extract the text for each keyword until the next line
-            response = response
+            response = response + "\n"
             if keyword == self.response_format_keywords["agreement"]:
-                match_keyword = self.find_keyword_match_JSON(response, keyword)
+                match_keyword = self.find_keyword_match(response, keyword)
                 if (
                     match_keyword
                     not in self.response_format_keywords["agreement_match_keywords"]
@@ -319,10 +304,9 @@ class WordleGame:
                 else:
                     result[keyword] = match_keyword
             else:
-                result[keyword] = self.find_keyword_match_JSON(response, keyword)
-            explanation_keyword = self.response_format_keywords["explanation"]
-            result[explanation_keyword] = self.find_keyword_match_JSON(
-                response, explanation_keyword
+                result[keyword] = self.find_keyword_match(response, keyword)
+            result["explanation"] = self.find_keyword_match(
+                response, self.response_format_keywords["explanation"]
             )
         # return result
 

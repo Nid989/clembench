@@ -9,9 +9,9 @@ import re
 import random
 
 from clemgame.clemgame import GameInstanceGenerator
-from games.wordle_cot.utils.instance_utils import InstanceUtils
+from games.wordle.utils.instance_utils import InstanceUtils
 
-GAME_NAME = "wordle_cot"
+GAME_NAME = "wordle"
 
 
 class WordleGameInstanceGenerator(GameInstanceGenerator):

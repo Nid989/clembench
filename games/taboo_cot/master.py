@@ -141,6 +141,10 @@ class TabooCOT(DialogueGameMaster):
         if self.guess_word == self.target_word:
             self.log_to_self("correct guess", self.guess_word)
             return False
+        if self.guess_word is not None:
+            if EN_STEMMER.stem(self.guess_word) == EN_STEMMER.stem(self.target_word):
+                self.log_to_self("correct guess", self.guess_word)
+                return False 
         if self.current_turn >= self.max_turns:
             self.log_to_self("max turns reached", str(self.max_turns))
             return False
@@ -154,11 +158,11 @@ class TabooCOT(DialogueGameMaster):
 
     def _validate_player_response(self, player: Player, utterance: str) -> bool:
         if player == self.guesser:
-            if not self._validate_JSON(utterance, ['REASON', 'GUESS']):
+            if not self._validate_JSON(utterance, ["Let's think step by step", 'GUESS']):
                 self.invalid_response = True
                 return False
         if player == self.describer:
-            if not self._validate_JSON(utterance, ['REASON', 'CLUE']):
+            if not self._validate_JSON(utterance, ["Let's think step by step", 'CLUE']):
                 self.invalid_response = True
                 return False
             errors = check_clue(utterance, self.target_word, self.related_words)

@@ -1,7 +1,7 @@
 import os
 
-# path_to_results_dir = os.path.join(os.getcwd(), "results")
-path_to_results_dir = "../Desktop/clembench-runs/v1.5"
+path_to_results_dir = os.path.join(os.getcwd(), "results")
+# path_to_results_dir = "../Desktop/clembench-runs/v1.5"
 path_to_outputs_dir = os.path.join(os.getcwd(), "outputs_")
 
 clemgames = ["taboo", "wordle", "wordle_withclue", "wordle_withcritic", "referencegame", "imagegame", "privateshared",
@@ -21,7 +21,7 @@ game_level_types = {
     "wordle_withclue": [
         "0_high_frequency_words_clue_no_critic",
         "1_medium_frequency_words_clue_no_critic",
-        "2_low_frequency_words_clue_no_critic"
+        # "2_low_frequency_words_clue_no_critic"
     ],
     "wordle_withcritic": [
         "0_high_frequency_words_clue_with_critic",
@@ -55,7 +55,10 @@ game_level_types = {
     "wordle_withclue_cot": [
         "0_high_frequency_words_clue_no_critic",
         "1_medium_frequency_words_clue_no_critic",
-        "2_low_frequency_words_clue_no_critic"
+    ],
+    "wordle_withclue_nocot": [
+        "0_high_frequency_words_clue_no_critic",
+        "1_medium_frequency_words_clue_no_critic",
     ],
     "referencegame_cot": [
         "0_line_grids_rows",
