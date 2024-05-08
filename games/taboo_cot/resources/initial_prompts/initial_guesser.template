@@ -6,10 +6,10 @@ After each trial you will get a new hint from the other player which starts with
 
 Your response should follow the JSON schema given below:
 {
-"REASON": "Explain the reasoning behind selecting a word as the guess based on the given clue.",
-"GUESS": "A single-word guess based on the given clue."
+"Let's think step by step": "reasoning why selecting a word as the guess provided the current clue",
+"GUESS": "single word based on the current clue"
 }
 
 Let us start.
 
-Let's think step-by-step. Do not generate anything else except for the JSON output.
+Do not generate anything else except for the JSON output.

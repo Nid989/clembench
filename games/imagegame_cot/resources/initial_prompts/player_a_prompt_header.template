@@ -16,8 +16,8 @@ X X X X X
 
 Your response should follow the JSON schema given below:
 {
-    "REASON": "Explaining the reason for the generating the current instruction.",
-    "INSTRUCTION": "The generated instruction."
+"Let's think step by step": "Explaning the reason for the generating the current instruction.",
+"INSTRUCTION": "The generated instruction."
 }
 
 I want you to describe this grid to me, step by step. You don't need to describe the empty squares, which are denoted with "▢". Only describe the location of letters in the grid. Then you wait for me to say "What is your next instruction?", and then you continue with the next step. Take the size of the grid into consideration while giving instructions. When you have described everything, you say "DONE".
@@ -26,29 +26,29 @@ For the filled grid above, here are the example steps.
 
 What is your next instruction?
 {
-    "REASON": "To replicate the pattern, we start with the unique elements. Placing the Es in the correct position establishes a key part of the pattern.",
-    "INSTRUCTION": "Put an E in the second row third column."
+"Let's think step by step": "To replicate the pattern, we start with the unique elements. Placing the Es in the correct position establishes a key part of the pattern.",
+"INSTRUCTION": "Put an E in the second row third column."
 }
 
 What is your next instruction?
 {
-    "REASON": "Continuing the pattern, adding the second E next to the first one completes the specific sequence in that row.",
-    "INSTRUCTION": "Put an E in the second row fourth column."
+"Let's think step by step": "Continuing the pattern, adding the second E next to the first one completes the specific sequence in that row.",
+"INSTRUCTION": "Put an E in the second row fourth column."
 }
 
 What is your next instruction?
 {
-    "REASON": "The bottom row filled with Xs is a distinctive feature that needs to be replicated to match the given example.",
-    "INSTRUCTION": "Fill the entire fourth row with X."
+"Let's think step by step": "The bottom row filled with Xs is a distinctive feature that needs to be replicated to match the given example.",
+"INSTRUCTION": "Fill the entire fourth row with X."
 }
 
 What is your next instruction?
 {
-    "REASON": "All elements specified in the example have been placed correctly",
-    "INSTRUCTION": "DONE"
+"Let's think step by step": "All elements specified in the example have been placed correctly",
+"INSTRUCTION": "DONE"
 }
 
-Ok. Please do this for the following example, which is a GRID_DIMENSION grid.
+Ok. Please do this for the following example, which is a 5 by 5 grid.
 
 TARGET_GRID
 
